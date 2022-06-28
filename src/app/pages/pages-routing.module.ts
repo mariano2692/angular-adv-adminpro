@@ -3,8 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { Grafica1Component } from './grafica1/grafica1.component';
 import { ProgressComponent } from './progress/progress.component';
-import { NopagefoundComponent } from './nopagefound/nopagefound.component';
 import { PagesComponent } from './pages.component';
+import { AccountSettingsComponent } from './account-settings/account-settings.component';
 
 const routes: Routes = [
   {
@@ -22,6 +22,10 @@ const routes: Routes = [
       {
         path:'progress',
         component:ProgressComponent
+      },
+      {
+        path:'account-settings',
+        component:AccountSettingsComponent
       },
       {
         path:'**',
