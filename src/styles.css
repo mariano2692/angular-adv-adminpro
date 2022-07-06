@@ -3,3 +3,7 @@
 #themecolors .selector{
     cursor: pointer;
 }
+.img-avatar{
+    max-width: 200px;
+    max-height: 200px;
+}

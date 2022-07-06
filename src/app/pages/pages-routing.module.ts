@@ -7,11 +7,14 @@ import { PagesComponent } from './pages.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { PromesasComponent } from './promesas/promesas.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
+import { AuthGuard } from '../guards/auth.guard';
+import { PerfilComponent } from './perfil/perfil.component';
 
 const routes: Routes = [
   {
     path:'',
     component:PagesComponent,
+    canActivate:[AuthGuard],
     children:[
       {
         path:'dashboard',
@@ -27,6 +30,12 @@ const routes: Routes = [
         path:'progress',
         component:ProgressComponent,
         data:{titulo:'progress'}
+      },
+      {
+        path:'perfil',
+        component:PerfilComponent,
+        data:{titulo:'perfil'}
+       
       },
       {
         path:'account-settings',
