@@ -1,0 +1,30 @@
+<div class="fondo-modal-imagen animated fadeIn fadeFast"
+     [class.oculto]="modalImagenService.ocultarModal">
+
+    <div class="modal fade show" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" style="display: block;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel1">Cargar imagen</h4>
+                    <button (click)="cerrarModal()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                </div>
+                <div class="modal-body">
+                    <h3>Seleccione una imagen</h3>
+
+                    <img [src]="modalImagenService.img" class="img-avatar">
+                    <br>
+    
+                    <input type="file" (change)="cambiarImagen($event)">
+    
+                </div>
+                <div class="modal-footer">
+                    <button (click)="cerrarModal()" type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button (click)="subirImagen()" type="button" class="btn btn-primary">Subir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+</div>
+

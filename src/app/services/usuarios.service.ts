@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { tap, map, Observable, catchError, of } from 'rxjs';
+import { tap, map, Observable, catchError, of, delay } from 'rxjs';
 import { Router } from '@angular/router';
 import { Usuario } from '../models/usuario.models';
 
@@ -23,6 +23,13 @@ export class UsuariosService {
   }
   get uid():string{
     return this.usuario.uid || ''
+  }
+  get headers(){
+    return {
+      headers:{
+        'x-token':this.token
+      }
+    }
   }
 
   constructor(private http:HttpClient,
@@ -54,7 +61,7 @@ export class UsuariosService {
   }
 
   crearUsuario(formData:any){
-    console.log('creando usuario')
+    
     return this.http.post(`${base_url}/usuarios`, formData)
      .pipe(
       tap((resp:any)=>{
@@ -64,15 +71,13 @@ export class UsuariosService {
   }
 
   actualizarUsuario(data:{nombre:string , email:string, role:string}){
+
     data ={
       ...data,
-      role: this.usuario.role!
+      role:this.usuario.role || ''
     }
-    return this.http.put(`${base_url}/usuarios/${this.uid}`,data,{
-      headers:{
-        'x-token':this.token
-      }
-    })
+
+    return this.http.put(`${base_url}/usuarios/${this.uid}`,data,this.headers)
   }
 
   login(formData:any){
@@ -93,4 +98,26 @@ export class UsuariosService {
         })
       )
   }
+  cagarUsuarios(desde:number = 0){
+    return this.http.get<{total:number, usuarios:Usuario[]}>(`${base_url}/usuarios?desde=${desde}`,this.headers)
+        .pipe(
+          delay(2000),
+          map(resp =>{
+            const usuarios = resp.usuarios.map(
+              user => new Usuario(user.nombre,user.email,user.role,user.google,user.img,user.uid)
+              )
+            return{total: resp.total, usuarios}
+          })
+        )
+  }
+
+  borrarUsuario(usuario: Usuario){
+    return this.http.delete(`${base_url}/usuarios/${usuario.uid}`,this.headers)
+  }
+
+  guardarUsuario(usuario:Usuario){
+
+    return this.http.put(`${base_url}/usuarios/${usuario.uid}`,usuario,this.headers)
+  }
+
 }
