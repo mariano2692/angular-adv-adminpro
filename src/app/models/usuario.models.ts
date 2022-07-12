@@ -16,8 +16,8 @@ export class Usuario {
            
             if(!this.img) return `${base_url}/upload/usuarios/noimg`
             if(this.img?.includes('https')) return this.img
-            if(this.img) return `${base_url}/upload/usuarios/${this.img}`
-            return `${base_url}/upload/usuarios/noimg`
+            return `${base_url}/upload/usuarios/${this.img}`
+         
            
         }
 }

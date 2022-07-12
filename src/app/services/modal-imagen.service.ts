@@ -22,12 +22,10 @@ export class ModalImagenService {
   get ocultarModal(){
     return this._ocultarModal
 
-
-
   }
   constructor() { }
 
-  abrirModal(tipo:'usuarios'|'medicos'|'hospirales', id:string = "", img:string = 'noimg'){
+  abrirModal(tipo:'usuarios'|'medicos'|'hospitales', id:string = "", img:string = 'noimg'){
     this._ocultarModal = false
     this.tipo = tipo
     this.id = id

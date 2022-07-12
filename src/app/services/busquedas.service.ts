@@ -48,11 +48,14 @@ export class BusquedasService {
           case 'usuarios':
             return this.generarUsuarios(resp.resultados)
             
-            break;
+          case 'hospitales':
+            return resp.resultados
+
+          case 'medicos':
+            return resp.resultados
         
           default:
             return []
-            break;
         }
       })
     )

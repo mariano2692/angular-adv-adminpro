@@ -4,6 +4,7 @@ import { Usuario } from '../../../models/usuario.models';
 import { BusquedasService } from '../../../services/busquedas.service';
 import Swal from 'sweetalert2';
 import { ModalImagenService } from 'src/app/services/modal-imagen.service';
+import { Subscription, delay } from 'rxjs';
 
 @Component({
   selector: 'app-usuarios',
@@ -17,16 +18,18 @@ export class UsuariosComponent implements OnInit {
   public usuariosTemp: Usuario[] = [];
   public desde:number = 0;
   public cargando:boolean = true;
+  private imgSub?:Subscription
 
   constructor(private usuariosService:UsuariosService,
               private buscarService:BusquedasService,
               private modalImagenService:ModalImagenService) { }
 
   ngOnInit(): void {
-    
-    this.modalImagenService.nuevaImagen.subscribe(img =>{
-       this.cargarUsuarios()})
+       this.imgSub = this.modalImagenService.nuevaImagen
+        .pipe(delay(100))
+        .subscribe(img => this.cargarUsuarios() )
        this.cargarUsuarios();
+       
   }
 
   cargarUsuarios(){
