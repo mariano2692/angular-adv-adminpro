@@ -6,7 +6,7 @@ import { UsuariosService } from '../services/usuarios.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate{
+export class AuthGuard implements CanActivate,CanLoad{
 
   constructor(private usuarioService:UsuariosService,
               private router:Router){
@@ -25,9 +25,14 @@ export class AuthGuard implements CanActivate{
       )
 
   }
-  // canLoad(
-  //   route: Route,
-  //   segments: UrlSegment[]): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-  //   return true;
-  // }
+  canLoad(
+    route: Route,
+    segments: UrlSegment[]): Observable<boolean> | boolean {
+    return this.usuarioService.validarToken()
+    .pipe(
+      tap(estaAutenticado =>{
+        if(!estaAutenticado) this.router.navigate(['/auth/login'])
+      })
+    )
+  }
 }

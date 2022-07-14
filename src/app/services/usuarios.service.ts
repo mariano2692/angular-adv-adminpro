@@ -25,7 +25,7 @@ export class UsuariosService {
     return this.usuario.uid || ''
   }
 
-  get role():'ADMIN_ROLE'|'USER_ROLE'{
+  get role():'ADMIN_ROLE'|'USER_ROLE'| undefined{
     return this.usuario.role
   }
   get headers(){
@@ -64,8 +64,9 @@ export class UsuariosService {
     })
     .pipe(
       map((resp:any) => {
-        const {nombre,email,google,role,img='',uid} = resp.usuario
-        this.usuario = new Usuario(nombre,email,google,role,img,uid)
+        const {nombre,email,role,google,img='',uid} = resp.usuario
+        this.usuario = new Usuario(nombre,email,role,google,img,uid)
+      
         this.guardarStorage(resp.token,resp.menu)
         return resp.ok}),
       catchError(err => of(false))
@@ -87,7 +88,7 @@ export class UsuariosService {
 
     data ={
       ...data,
-      role:this.usuario.role
+      role:this.usuario.role || ''
     }
 
     return this.http.put(`${base_url}/usuarios/${this.uid}`,data,this.headers)
