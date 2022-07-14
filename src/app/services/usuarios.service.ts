@@ -24,6 +24,10 @@ export class UsuariosService {
   get uid():string{
     return this.usuario.uid || ''
   }
+
+  get role():'ADMIN_ROLE'|'USER_ROLE'{
+    return this.usuario.role
+  }
   get headers(){
     return {
       headers:{
@@ -35,7 +39,15 @@ export class UsuariosService {
   constructor(private http:HttpClient,
               private router:Router) { }
 
+  
+  
+  guardarStorage(token:string, menu:any){
+    localStorage.setItem('token',token)
+    localStorage.setItem('menu',JSON.stringify(menu) )
+  }
+
   logout(){
+    localStorage.removeItem('menu')
     localStorage.removeItem('token')
 
     google.accounts.id.revoke('marianoalbertomenendez@gmail.com',()=>{
@@ -52,9 +64,9 @@ export class UsuariosService {
     })
     .pipe(
       map((resp:any) => {
-        const {email,google,nombre,role,img='',uid} = resp.usuario
+        const {nombre,email,google,role,img='',uid} = resp.usuario
         this.usuario = new Usuario(nombre,email,google,role,img,uid)
-        localStorage.setItem('token',resp.token)
+        this.guardarStorage(resp.token,resp.menu)
         return resp.ok}),
       catchError(err => of(false))
     )
@@ -65,7 +77,8 @@ export class UsuariosService {
     return this.http.post(`${base_url}/usuarios`, formData)
      .pipe(
       tap((resp:any)=>{
-        localStorage.setItem('token',resp.token)
+        this.guardarStorage(resp.token,resp.menu)
+
       })
     )
   }
@@ -74,7 +87,7 @@ export class UsuariosService {
 
     data ={
       ...data,
-      role:this.usuario.role || ''
+      role:this.usuario.role
     }
 
     return this.http.put(`${base_url}/usuarios/${this.uid}`,data,this.headers)
@@ -84,7 +97,8 @@ export class UsuariosService {
     return this.http.post(`${base_url}/login`,formData)
         .pipe(
           tap((resp:any)=>{
-            localStorage.setItem('token',resp.token)
+            this.guardarStorage(resp.token,resp.menu)
+
           })
         )
 
@@ -94,7 +108,8 @@ export class UsuariosService {
     return this.http.post(`${base_url}/login/google`,{token})
       .pipe(
         tap((resp:any)=>{
-          localStorage.setItem('token',resp.token)
+          this.guardarStorage(resp.token,resp.menu)
+
         })
       )
   }

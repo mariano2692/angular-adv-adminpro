@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AdminGuard } from '../guards/admin.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { Grafica1Component } from './grafica1/grafica1.component';
 import { ProgressComponent } from './progress/progress.component';
@@ -15,6 +16,8 @@ import { UsuariosComponent } from './mantenimientos/usuarios/usuarios.component'
 import { HospitalesComponent } from './mantenimientos/hospitales/hospitales.component';
 import { MedicosComponent } from './mantenimientos/medicos/medicos.component';
 import { MedicoComponent } from './mantenimientos/medicos/medico.component';
+import { BusquedasComponent } from './busquedas/busquedas.component';
+
 
 const routes: Routes = [
   {
@@ -54,6 +57,11 @@ const routes: Routes = [
         data:{titulo:'promesas'}
       },
       {
+        path:'buscar/:termino',
+        component:BusquedasComponent,
+        data:{titulo:'busquedas'}
+      },
+      {
         path:'rxjs',
         component:RxjsComponent,
         data:{titulo:'rxjs'}
@@ -62,6 +70,7 @@ const routes: Routes = [
       //MANTENIMIENTO
       {
         path:'usuarios',
+        canActivate:[AdminGuard],
         component:UsuariosComponent,
         data:{titulo:'usuarios'}
       },
@@ -79,6 +88,8 @@ const routes: Routes = [
         path:'medico/:id',
         component:MedicoComponent
       },
+
+      // rutas de adminsitrador
       {
         path:'**',
         redirectTo:'dashboard'

@@ -34,6 +34,11 @@ export class BusquedasService {
 
   constructor(private http:HttpClient) { }
 
+
+  busquedaGlobal(termino:string){
+    return this.http.get(`${base_url}/todo/${termino}`,this.headers)
+  }
+
  private generarUsuarios(resultados: any[]): Usuario[]{
   return resultados.map(
     user => new Usuario(user.nombre,user.email,user.role,user.google,user.img,user.uid)

@@ -35,13 +35,14 @@ export class PerfilComponent implements OnInit {
     this.usuarioService.actualizarUsuario(this.miform.value)
       .subscribe({
         next: () =>{
-          const {nombre, email} =this.miform.value
+          const {nombre, email} = this.miform.value
           this.usuario.nombre = nombre
           this.usuario.email = email
   
           Swal.fire('Guardado','los cambios fueron guardados','success')
         },
-        error: err => Swal.fire('Error', err.error.msg, 'error' )
+        error: err => console.log(err)
+      
       })
   }
 
